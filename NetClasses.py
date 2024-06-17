@@ -9,7 +9,7 @@ from tensorflow.keras import layers
 from tqdm import tqdm
 
 from tensorflow.keras.layers import Input, Dense, Concatenate
-
+from tensorflow.keras.models import Model
 
 class ShallowNetwork:
     """
@@ -107,3 +107,52 @@ class BinaryNetwork:
 
     def diagram(self):
         return tf.keras.utils.plot_model(self.model, show_shapes=True)
+
+
+
+class DAGNetwork:
+    def __init__(self, graph, input_dim, neurons_per_node, output_dim):
+        self.graph = graph  # the graph dict: node -> [nodes it points to]
+        self.input_dim = input_dim
+        self.neurons_per_node = neurons_per_node
+        self.output_dim = output_dim
+        self.model = self.build_model()
+
+    def build_model(self):
+        inputs = Input(shape=(self.input_dim,))
+        layer_dict = {}
+
+        # Create a layer for each node in the graph
+        for node in self.graph:
+            layer_dict[node] = Dense(self.neurons_per_node, activation='relu')
+
+        # Connect layers according to the graph
+        output_layers = []
+        for node, children in self.graph.items():
+            if children:
+                for child in children:
+                    if child not in layer_dict:
+                        raise ValueError(f"Node {child} not defined in graph")
+                    # connect node output to each child's layer
+                    x = layer_dict[node](inputs if node == 'input' else layer_dict[node].output)
+                    layer_dict[child].output = Concatenate()([layer_dict[child].output, x]) if hasattr(layer_dict[child], 'output') else x
+            else:
+                # Collect outputs for nodes that don't point to others
+                output_layers.append(layer_dict[node](inputs if node == 'input' else layer_dict[node].output))
+
+        # If there are multiple outputs, concatenate them
+        if len(output_layers) > 1:
+            concatenated_outputs = Concatenate()(output_layers)
+            final_output = Dense(self.output_dim, activation='softmax')(concatenated_outputs)
+        else:
+            final_output = Dense(self.output_dim, activation='softmax')(output_layers[0])
+
+        model = Model(inputs=inputs, outputs=final_output)
+        model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
+        return model
+
+    def summary(self):
+        self.model.summary()
+
+    def diagram(self):
+        return tf.keras.utils.plot_model(self.model, show_shapes=True, show_layer_names=True)

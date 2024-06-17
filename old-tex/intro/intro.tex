@@ -1,0 +1,38 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{geometry}
+\geometry{a4paper, margin=1in}
+
+\begin{document}
+
+% \tableofcontents
+
+\pagebreak
+
+\section{Introduction}
+
+
+The "curse of dimensionality" is perhaps mythologised slightly in how it is named, but to those who encounter it, the description likely seems appropriate. The "curse" refers to various phenomena that arise when analysing and organising data in high-dimensional spaces (often with hundreds or thousands of dimensions) that do not occur in lower-dimensional settings. This term is widely used in fields such as data analysis, machine learning, and statistics. In particular it refers to the difficulties that arise in organising and analysing data in higher-dimensional spaces as an increasing volume of the space results in increasingly sparse data. \cite{enwiki:1223692835} This phenomena was central to the motivations of this project.
+
+Neural networks, a class of machine learning models inspired by the human brain, are particularly affected by this curse. These networks are designed to recognise patterns and make decisions based on high-dimensional input data. However, as the dimensionality of the input data increases, the amount of data required to train the model and the complexity of the model required to achieve a given accuracy effectively also increases, leading to challenges in model training and generalisation.
+
+This project aims to address the curse of dimensionality in neural networks by exploring existing theoretical results and translating them into practical, discretised frameworks. Specifically, we will investigate how these results, which often pertain to specific classes of functions, can be adapted and applied to more grounded, discrete mathematical structures. The objectives of this research include:
+
+\begin{itemize}
+    \item Analysing the existing literature on approximation theory and neural networks, focusing on the classes of functions they attempt to approximate.
+    \item Creating analogous mathematical structures to continuous ones, ensuring they are well-defined and exploring their properties.
+    \item Conducting experiments to verify if analogous theoretical results hold true in these newly defined discrete spaces.
+\end{itemize}
+
+By translating theoretical results from analytic approximations in continuous function spaces to discrete analogs, this research seeks to find a solid methodology to mitigate the curse of dimensionality in neural networks, providing a more practical and robust framework for high-dimensional data analysis, and how an individual might use these results in practice.
+
+We begin our discussion first with a conversation on philosophy and our underlying motivations - exploring what classes of functions neural networks can already approximate well and making an attempt to bridge the empirical ("real world") and theoretical. This concept is going to be the central pillar of this project.
+
+When we construct a neural network we attempt to approximate some function. Much of the theory starts from the premise our target function is a member of some continuous function space. However, in practice, the training data we are working with is discrete and the functions we attempt to approximate are too. This naturally leads to the question of how well the theory holds up in practice and if we can make any guarantees about the performance of our neural networks. This is the question we aim to answer in this project.
+
+\section{Philosophy}
+We aim to explore the case where we have some a priori knowledge of our target function - how does our methodology and implementation change in practice? We aim to see if we can leverage these presumptions to improve the performance of our neural networks, say for our example us knowing that our target function belongs to some smoothness class.
+
+\end{document}
+

@@ -1,0 +1,326 @@
+
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{geometry}
+\usepackage{graphicx} % Include graphics
+\usepackage{hyperref} % Hyperlinks
+\usepackage{enumerate} % Customizable enumeration
+\geometry{a4paper, margin=1in}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem*{definition*}{Definition}
+\theoremstyle{remark}
+\newtheorem*{remark}{Remark}
+\newtheorem*{note}{Note}
+
+\numberwithin{equation}{section}
+
+\begin{document}
+
+% \tableofcontents
+
+
+\section{Theorem 1}
+
+We state the theorem and proof from \cite{Mhaskar} as follows;
+
+Let $1 \leq d \leq s, n \geq 1$ be integers, $f : \mathbb{R}^s \rightarrow \mathbb{R}$ and $\phi : \mathbb{R}^d \rightarrow \mathbb{R}$. A \textit{generalized translation network} with $n$ neurons evaluates a function of the form $\sum_{k=1}^n a_k \phi(A_k (\cdot) + \mathbf{b}_k)$ where the \textit{weights} $A_k$s are $d \times s$ real matrices, the \textit{thresholds} $\mathbf{b}_k \in \mathbb{R}^d$ and the \textit{coefficients} $a_k \in \mathbb{R}$ $(1 \leq k \leq n)$. The set of all such functions (with a fixed $n$) will be denoted by $\Pi_{\phi;n,s}$.
+
+We attempt to approximate \(f\) by elements of \(\Pi_{\phi;n,s}\) on the domain \([-1,1]^s\). For the \(d=1\) case we have \(\Pi_{\phi;n,s} \) simply the collection of shallow networks with \(n\) neurons in their hidden layer.
+
+This construction will not provide the best approximation, but will instead provide the optimal order of approximation. We have also, that the weights \(A_{k}\)'s and the thresholds \(\mathbf{b}_{k}\)'s  will be determined independently of the target function
+\(f\).
+
+We observe a notable assumption that we are able to sample from the
+target function at all prescribed points without noise.
+
+
+
+
+\subsection{Statement}
+
+
+We can make the following statement for the required complexity of a shallow network to approximate a function in a Sobolev space.\\
+
+Let \(1 \leq d \leq s\), \(r \geq 1\), \(n \geq 1\) be integers and \(1 \leq p \leq \infty\). Let \(\phi: \mathbb{R}^d \rightarrow \mathbb{R}\) be infinitely many times continuously differentiable in some open sphere in \(\mathbb{R}^d\). It is further assumed that there exists a point \(b\) in this sphere such that
+
+\begin{equation}
+    D^k \phi(b) \neq 0, \mathbf{k} \in \mathbb{Z}^d, \mathbf{k} \geq 0
+    \label{derCondition}
+\end{equation}
+
+Note that the above condition, is equivalent to the statement that the function \(\phi\) is not a polynomial. This is shown in \cite{25Poggio}.
+
+Then, there exist \(d \times s\) matrices \(\{A_j\}_{j=1}^n\) with the following property: For any function \(f\) in the Sobolev space \(W^p_{r,s}\), there exist coefficients \(a_j(f)\) such that
+
+\begin{equation}
+    \left\| f - \sum_{j=1}^{n} a_j(f) \phi(A_j(\cdot) + b_{j}) \right\|_p \leq c n^{-r/s} \|f\|_{W^{p}_{r,s}}
+\end{equation}
+
+Here, the functionals \(a_j\) are continuous linear functionals on \(W^p_{r,s}\).
+
+In particular, we measure the \textit{degree of approximation} of \(f\) by the expression
+
+   \[
+    E_{\phi;n,p} = \inf\{ \left\| f - g \right\|_p : g \in \Pi_{\phi ; n,s} \}
+   \]
+
+   The quantity \(E_{\phi ; n,p}\)  denotes the theoretically minimal error that can be achieved in approximating the function \(f\)  in the \(L^p\)  norm by generalized translation networks with \(n\)  neurons each evaluating the activation function \(\phi \).
+
+\[ E_{\phi ; n,p,r,s} := \sup\{E_{\phi ; n,p}(f) : \|f\|_{W^p_{r,s}} \leq 1\}  \leq c n^{-r/s} \]
+
+where \( E_{\phi;n,r,s,p} \) denotes the maximal error that can be achieved in approximating functions in \(W^p_{r,s}\) by generalized translation networks with \(n\) neurons each evaluating the activation function \(\phi \), with the assumption that the target function \(f \in W^p_{r,s}\) is properly normalised. Here we take the fact that that any function in \(W^p_{r,s}\) can be normalized so that \( \|f\|_{W^p_{r,s}} \leq 1 \).
+
+\subsection{Proof} 
+
+\subsubsection{Idea for Proof}
+
+For every integer \(m \geq r, \exists \) polynomial \(P_{m}(f)\) of co-ordinatewise degree not exceeding \(m\) such that \(\forall f \in W^{p}_{r,s}\).
+By co-ordinatewise degree, we mean that the degree of the polynomial in each variable is at most \(m\).
+
+\[
+\|f - P_{m}(f)\|_{p,[-\pi,\pi]^s} \leq \frac{c}{m^r} \|f\|_{W^{p*}_{r,s}}  
+\]
+
+Aim to express each monomial in \(P_{m}(f)\) with suitable derivative of \(\phi \), then take each derivative approximations and approximate it by an appropriate divided difference method involving \(O(m^s)\) evaluations of \(\phi \) 
+
+\subsubsection{Useful Definitions and clarifications}
+
+
+\begin{itemize}
+    \item \(\left\vert \mathbf{k}  \right\vert = \sum_{j} k_{j}\)
+    \item  \(0 \leq \mathbf{k} \leq \mathbf{r}  \iff 0 \leq k_{j}\leq r_{j} \forall j\) 
+    \item \(L^{p^{\ast} } := L^{p}([-\pi ,\pi ]^s) \), \(W^{p^{\ast} }_{r,s} := W^{p}_{r,s} ([-\pi ,\pi ]^s)\) 
+
+    \item \textbf{Fourier Coefficients}: For a function \( g \in L^{p^*} = L^{p}([-\pi ,\pi ]^s) \), its Fourier coefficients are given by the following, where \( \mathbf{k} \) is a multi-index in \( \mathbb{Z}^s \), and \( \mathbf{t}  \) is in the domain \( [-\pi, \pi]^s \).
+
+    \begin{equation}
+        {g}(\mathbf{k}) := \frac{1}{(2\pi)^s} \int_{[-\pi,\pi]^s} g(\mathbf{t})e^{-i \mathbf{kt}} d \mathbf{t}, \quad \mathbf{k} \in \mathbb{Z}^s.  
+    \end{equation}
+
+
+    \item \textbf{Partial Sums of the Fourier Series}: The partial sum \( s_m(g, t) \) of the Fourier series of \( g \) is given as follows,
+    
+    \begin{equation}
+        s_m(g(\mathbf{k}),t) := \sum_{-\mathbf{m} \leq \mathbf{k} < \mathbf{m}}  {g}(\mathbf{k})e^{i \mathbf{kt}}, \quad \mathbf{m}  \in \mathbb{Z}^s, \quad \mathbf{m}  \geq 0, \quad \mathbf{t} \in [-\pi, \pi]^s,
+    \end{equation}
+
+    \item \textbf{de la Vallée Poussin Operator}: The de la Vallée Poussin operator \( v_n(g, t) \) for a function \( g \) is defined as the average of the partial sums \( s_m(g, t) \) where \( m \) ranges from \( n \) to \( 2n \). This operator is used to create a smoothed approximation of the function \( g \).
+    
+    \begin{equation}
+        v_n(g,\mathbf{t} ) := \frac{1}{(n+1)^s} \sum_{n \leq \mathbf{m} \leq 2n} s_{\mathbf{m}}(g,t), \quad n \in \mathbb{Z}, \quad n \geq 0, \quad \mathbf{t} \in [-\pi, \pi]^s,
+    \end{equation}
+
+\end{itemize}
+
+We occasionally omit the \(\mathbf{k} \) argument of \(g(\mathbf{k} )\) for brevity.
+
+\begin{proposition}[\cite{prop3.1 Mhaskar}]
+\label{prop31}
+We have the following result:
+\begin{itemize}
+    \item  Given integers \( r \geq 1 \), \( s \), \( m \geq 1 \), and \( 1 \leq p \leq \infty \).
+    \item  Let \( g \) be a function in the Sobolev space \( W^{p^{\ast}}_{r,s} \).
+    
+    \item Then \( v_m(g) \) is defined as a trigonometric polynomial of coordinate-wise order at most \( 2m \). This means that \( v_m(g) \) is a polynomial composed of sine and cosine terms, where the highest frequency term has a frequency of \( 2m \).
+    
+    Here \( v_m(g) \) is defined as the de la Vallée Poussin operator applied to \( g \), we omit the \(t\) dependence for brevity. \(v_{m}(g) \equiv v_{m}(g(\mathbf{k} ), \mathbf{t} )\equiv v_{m}(g,\mathbf{t} )(\mathbf{k} )\) 
+    \item And 
+
+    \begin{equation}
+        \|g - v_m(g)\|_{p, [-\pi, \pi]^s} \leq \frac{c}{m^r} \|g\|_{W^{p*}_{r,s}}
+        \label{keyInequality}
+    \end{equation}
+    \item further,
+    \begin{equation}
+        \sum_{0 \leq \mathbf{k} < 2m} |\Hat{v_m(g)}(\mathbf{k})| \leq cm^\alpha \|g\|_{W^{p*}_{r,s}}  \quad \text{where} \quad \alpha = \frac{s}{\min(p,2)} 
+    \end{equation}
+\end{itemize}
+\end{proposition}
+
+The idea follows to make a periodic function from a function on \([-1,1]^s\). The standard way to achieve this is via a cosine substitution; \(x_{j} = \cos (t_{j}) 1 \leq j \leq s, \mathbf{x} \in [-1,1]^s, \mathbf{t} \in [-\pi ,\pi ]^s\). This substitution doesn't work as the \(L^p\) norms are no longer equal under this substitution.
+
+Instead construct the following.\\
+We first have from \cite{Stein 1970} that there exists a continuous linear operator \( T: W_{r,s}^{p} \to W_{r,s}^{p}([-2,2]^s) \) such that the restriction of \( T(f) \) on \( [-1,1]^s \) is (almost everywhere) equal to \( f \). The continuity of the operator \( T \) means that
+\[
+    \|T(f)\|_{W_{r,s}^{p}([-2,2]^s)} \leq c \|f\|_{W_{r,s}^{p}}  
+\]
+for every \(f \in W_{r,s}^{p}\), This means that the operator \( T \) maps a function in the Sobolev space \( W_{r,s}^{p} \) to a function in the same space but defined on a larger domain, \( [-2, 2]^s \), we construct this operator later.
+
+If we find in practice we have an \(f\) already appropriately defined on \([-2,2]^s\), then we can simply work with \(f\) itself rather than \(T(f)\), however our bounds would then depend on the respective Sobolev space; \(W_{r,s}^{p}([-2,2]^s)\) 
+
+We now define \(\psi \) be an infinitely differentiable function that takes the value 1 on \([-1,1]^s\) and \(0\)  outside the interval \([-3/2,3/2]^s\). Then the function \(T(f)\psi \) coincides with \(f\) on \([-1,1]^s\) and is identically zero outside \([-3/2,3/2]^s\) and
+
+\begin{equation}
+    \|T(f)\psi\|_{W_{r,s}^{p}([-2,2]^s)} \leq c \|f\|_{W_{r,s}^{p}}  
+    \label{bound1}
+\end{equation}
+
+We relabel \(T(f)\psi\) as \(f\) for brevity. We then define a 2\(\pi\)-periodic function \(f^*\) from the function \(f\) (extended as above) using the transformation \(x_{j} = 2 \cos (t_{j}) 1 \leq j \leq s, \mathbf{x} \in [-1,1]^s, \mathbf{t} \in [-\pi ,\pi ]^s\).
+
+\begin{equation}    
+    f^*(\mathbf{t}) = f(\mathbf{x}) = f(2 \cos(t_1),...,2 \cos(t_s)) \quad \mathbf{t} \in [-\pi ,\pi ]^s
+\end{equation}
+
+We find that \(f^{\ast} \in W_{r,s}^{p^{\ast}}\). Using induction and the fact that \(f\) is identically zero outside \([-3/2,3/2]^s\), using the previous bound (\ref{bound1}) we find
+
+\begin{equation}
+    c_{1} \|f\|_{W_{r,s}^{p}} \leq \|f^{\ast}\|_{W_{r,s}^{p^{\ast}}} \leq c_{2} \|f\|_{W_{r,s}^{p}}
+\end{equation}
+
+We can now check that for any integer \(m\), \(v_{m}(f^{\ast} )\) is even and can be written as a sum of just cosines. We write for some set of coefficients \(V_{\mathbf{k} }(f)\), the de la Vallée Poussin operator applied to \(f^{\ast}\) as
+
+\begin{equation}
+    v_{m}(f^{\ast}, \mathbf{t} ) = \sum_{0 \leq \mathbf{k} \leq 2m} V_{\mathbf{k}}(f) \prod_{j=1}^{s} \cos(k_{j}t_{j})
+\end{equation}
+
+For integer \(k \geq 0 \), we let \(T_{k}\) be the Chebyshev polynomial adapted to the interval \([-2,2]\) as defined by
+
+\begin{equation}
+    T_{k}(2\cos t) = \cos(kt) \quad \text{for} \quad t \in [-\pi ,\pi ]
+\end{equation}
+
+And for a multi-integer \(\mathbf{k} \geq 0\), let 
+\begin{equation}
+    T_{\mathbf{k}}(\mathbf{x}) = \prod_{j=1}^{s} T_{k_{j}}(x_{j}) \quad \text{for} \quad \mathbf{x} \in \mathbb{R}^{s}
+\end{equation}
+
+The polynomial \(P_{m}(f)\) of co-ordinatewise degree at most \(2m\) is then defined as
+\begin{equation}
+    P_{m}(f, \mathbf{x}) = \sum_{0 \leq \mathbf{k} \leq 2m} V_{\mathbf{k}}(f) T_{\mathbf{k}}(\mathbf{x}) \quad \text{for} \quad \mathbf{x} \in \mathbb{R}^{s}  
+\end{equation}
+
+We relate \(P_{m}(f)\) to \(v_{m}(f^{\ast})\) by the following
+
+\begin{equation}
+    P_{m}(f, (2\cos t_1, ..., 2\cos t_s)) = v_{m}(f^{\ast}, \mathbf{t}) \quad \text{for} \quad \mathbf{t} \in [-\pi ,\pi ]^s
+\end{equation}
+
+Going back to our key result and equation (\ref{keyInequality}). We have that
+
+\begin{equation}
+    \|f - P_{m}(f)\|_{p,[-\pi,\pi]^s} \leq \frac{c}{m^r} \|f\|_{W^{p*}_{r,s}}
+\end{equation}
+
+and that 
+
+\begin{equation}
+    \sum_{0 \leq \mathbf{k} \leq 2m} |V_{\mathbf{k}}(f)| \leq cm^{\alpha} \|f\|_{W^{p*}_{r,s}}  \quad \text{where} \quad \alpha = \frac{s}{\min(p,2)}  
+\end{equation}
+
+To finish our proof we now have to construct an approximation to every polynomial. This is achieved by the following lemma.
+
+\begin{lemma}
+    States that given a function \(\phi\) satisfying conditions from Theorem 1, for any integer \(m \geq 1\) and any multi-integer \(\mathbf{k} \in \mathbb{Z}^{s} \) with each component \(\mathop{\max}_{1 \leq j \leq s} |k_{j}| \leq m\) , there exists a function \(G_{\mathbf{k} ,m ,\epsilon} \in \Pi_{\phi ; (6m +1)^s, s}\) such that 
+
+    \begin{equation}
+        \|T_{\mathbf{k}} - G_{\mathbf{k} ,m ,\epsilon}\|_{\infty} \leq \epsilon
+    \end{equation}
+    
+    The weights and thresholds of each \(G_{\mathbf{k} ,m,\epsilon }\) may be chosen from a fixed set with cardinality not exceeding \((6m  +1)^s\) 
+\end{lemma}
+
+\begin{proof}
+    
+First consider the case when \(d = 1\). We take the point \(\mathbf{b} \) from (\ref{derCondition}), for \(d = 1\) this is a real number, \(\mathbf{b} = b \).
+Let \(\phi \) be infinitely many times continuously differentiable on \([b-\delta ,b+\delta ]\)
+
+For a multi-integer \(\mathbf{p} = (p_1, \ldots , p_{s} )\) and \(\mathbf{x} \in \mathbb{R}^s\) we write 
+\begin{equation}
+    \mathbf{x}^{\mathbf{p} } := \prod_{j=1}^{s} x_{j}^{p_{j}} \quad \text{ where we take } 0^0 = 1
+\end{equation}
+We see from
+\begin{equation}
+    \phi_{p}(\mathbf{w}; \mathbf{x}) := \frac{\partial^{|p|}}{\partial w_{p_1} \dots \partial w_{p_s}} \phi(\mathbf{w} \cdot \mathbf{x} + b) = x^{\mathbf{p} } \phi^{(|\mathbf{p}|)}(\mathbf{w} \cdot \mathbf{x} + b),
+\end{equation}
+we conclude that
+\begin{equation}
+    \mathbf{x}^{\mathbf{p} } = \left(
+        \phi^{(|\mathbf{p}|)}\mathbf{w} (b)
+        \right)^{-1} \phi_{\mathbf{p} }(\textbf{0} ; x)
+\end{equation}
+
+We now apply our appropriate divided difference to replace \(\phi_{\mathbf{p} }(\textbf{0} ; x)\).
+For multi-integers \(\mathbf{p}\) and \(\mathbf{r} \), we write
+\begin{equation}
+    \binom{p}{r} := \prod_{j=1}^{s} \binom{p_j}{r_j}.
+\end{equation}
+
+For any \( h > 0 \), the network defined by the formula
+\begin{equation}
+    \Phi_{p,h}(\mathbf{x}) := h^{-|p|} \sum_{0 \leq r \leq p} (-1)^{|r|} \binom{p}{r} \phi(h(2r - p) \cdot \mathbf{x} + b)
+\end{equation}    
+
+is in \( \Pi_{\phi;(p_1+1), \ldots, (p_s+1)} \), and represents a divided difference for \( \phi_{p}(0; \mathbf{x}) \). Further, we have
+\begin{equation}
+    \| \Phi_{p,h} - \phi_{p}(0; \cdot) \|_{\infty} \leq M_{\phi,m,s}h^2, \quad \mathop{\max}_{1 \leq j \leq s} \mid p_{j} \mid \leq m, \mid h \mid \leq \delta / (3ms)
+\end{equation}
+
+where \( M_{\phi,m,s} \) is a positive constant depending only on the indicated variables.
+
+Now, we write \( T_k(\mathbf{x}) := \sum_{0\leq p \leq k} \tau_{ \mathbf{k},\mathbf{p} } \mathbf{x}^{\mathbf{p}} \), and choose
+\begin{equation}
+    h := h_{\phi,m,s} := \min \left\{ \delta, \min_{0\leq s \leq 2m} \left( \frac{\epsilon}{M_{\phi,m,s} \sum_{0 \leq p \leq k} |\phi(b)|^{-1} |\tau_{k,p}|} \right)^{1/2} \right\}.
+\end{equation}
+
+Then the above equation implies that the network \( G_{k,m,\epsilon} \) defined by
+
+\begin{equation}
+    G_{k,m,\epsilon}(\mathbf{x}) := \sum_{0 \leq p \leq k} \tau_{k,p}(\phi(b))^{-1} \Phi_{p,h_{\phi,m,s}}(\mathbf{x}),
+\end{equation}
+
+satisfies the bound given in the lemme. For each \( \mathbf{k} \), the weights and thresholds in \( G_{k,m,\epsilon} \) are chosen from the set
+\begin{equation}
+    \{ (h_{\phi,m,s}, b) : b \in \mathbb{Z}^s, |r_{j}| \leq 3m, 1 \leq j \leq s \}.
+\end{equation}
+
+The cardinality of this set is \( (6m + 1)^s \). Therefore, \( G_{k,m,\epsilon} \in \Pi_{\phi;(6m+1)^s} \).
+
+Next, if \(d >1\), and \(\mathbf{b}\) is as in the original theorem, then we consider the univariate function
+\begin{equation}
+    \sigma (x) := \phi (x, b_2, \ldots, b_d)
+\end{equation}
+
+The function \( \sigma \) satisfies all the hypothesis of Theorem 1, with \( b_1 \) in place of \( \mathbf{b}  \). Taking into account the fact that \( \sigma(\mathbf{w} \cdot \mathbf{x} + b_1) = \phi(A_{\mathbf{w}}\mathbf{x} + b) \) with
+\begin{equation}
+    A_{\mathbf{w}} := \begin{pmatrix}
+        \mathbf{w} \\
+        0 \\
+        \vdots \\
+        0
+    \end{pmatrix},
+\end{equation}
+
+any network in \( \Pi_{\sigma;n,s} \) is also a network in \( \Pi_{\phi;n,s} \). Therefore, the case \( d = 1 \) implies the lemma also when \( d > 1 \).
+\end{proof}
+
+\begin{proof}[Theorem 1 Proof]
+
+Without loss of generality, we may assume that \( n \geq 13^s \). Let \( m \geq 1 \) be the largest integer such that \( (12m + 1)^s \leq n \). We define \( P_m(f) = \sum_{0 \leq k \leq 2m} V_k(f)T_k \) as before. We then define the network
+\begin{equation}
+    N_n(f, x) := \sum_{0 \leq k \leq 2m} V_k(f)G_{k,2m,m-r-\alpha}(x)
+\end{equation}
+is in \( \Pi_{\phi;n,s} \) and satisfies
+\begin{equation}
+    \| P_m(f) - N_n(f) \|_{\infty} \leq cm^{-r} \| f \|_{W_r^p, s}.
+\end{equation}
+Since \( \| g \|_p \leq 2^{s/p} \| g \|_{\infty} \) for all Lebesgue measurable functions \( g \) on \( [-1,1] \) we get from our key result (Proposition \ref{prop31}, equation \ref{keyInequality}) that
+\begin{equation}
+    \| f - N_n(f) \|_p \leq cn^{-r/s} \| f \|_{W_r^p, s}
+\end{equation}
+
+as required. Further, it is quite clear that the coefficients \( V_k \) are continuous linear functionals on \( L^p \). Hence, the continuity assertion follows.
+\end{proof}
+
+
+
+
+\end{document}

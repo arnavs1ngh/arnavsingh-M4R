@@ -1,0 +1,41 @@
+
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{geometry}
+\usepackage{graphicx} % Include graphics
+\usepackage{hyperref} % Hyperlinks
+\usepackage{enumerate} % Customizable enumeration
+\geometry{a4paper, margin=1in}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem*{definition*}{Definition}
+\theoremstyle{remark}
+\newtheorem*{remark}{Remark}
+\newtheorem*{note}{Note}
+
+\begin{document}
+
+% \tableofcontents
+
+\setcounter{section}{3} 
+\section{Chapter 4}
+
+We now move to briefly discuss Theorem 2.
+
+\setcounter{theorem}{1} 
+\begin{theorem}
+    It considers a function \( f \in W_{m}^{2,n} \), the class of all compositional functions \(f\) of \(n\) variables with a binary tree architecture and constituent functions \(h\)  in \(W_{m}^{2}\)  and a deep network with a compositional architecture.\\
+The activation function \( \sigma: \mathbb{R} \rightarrow \mathbb{R} \) in this context is also infinitely differentiable and not a polynomial. The complexity of the network necessary to provide an approximation with accuracy at least \( \varepsilon \) is 
+
+\[ N = O((n - 1)\varepsilon^{-2/m}) \]
+\end{theorem}
+
+\end{document}
